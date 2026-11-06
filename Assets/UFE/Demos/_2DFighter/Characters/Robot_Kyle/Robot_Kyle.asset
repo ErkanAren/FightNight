@@ -171,7 +171,7 @@ MonoBehaviour:
   useScaleFlip: 0
   applyRootMotion: 0
   animationFlow: 0
-  useAnimationMaps: 1
+  useAnimationMaps: 0
   normalizeAnimationFrames: 0
   moveSetReferences:
   - storageType: 1

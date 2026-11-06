@@ -19,7 +19,7 @@ MonoBehaviour:
   profilePictureSmall: {fileID: 2800000, guid: 732b03cedb33338429bf2ce31b12cfb0, type: 3}
   usePicAsIcon: 1
   profilePictureBig: {fileID: 2800000, guid: dac8e3d31c37f4146a276a538033c068, type: 3}
-  characterName: Ethan
+  characterName: Erkanis
   gender: 1
   characterDescription: 'Project: Fighter 2D
 
@@ -190,7 +190,7 @@ MonoBehaviour:
   useScaleFlip: 0
   applyRootMotion: 0
   animationFlow: 0
-  useAnimationMaps: 1
+  useAnimationMaps: 0
   normalizeAnimationFrames: 0
   moveSetReferences:
   - storageType: 1
