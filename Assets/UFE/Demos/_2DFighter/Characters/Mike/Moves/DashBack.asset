@@ -1,0 +1,361 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1528491153, guid: 290947d1480294243a72173919bf47d1, type: 3}
+  m_Name: DashBack
+  m_EditorClassIdentifier: 
+  guid: 81c326b65dafe2f4d872e527080ac60f
+  fileId: 11400000
+  version: 2.7.2
+  gameplayType: 0
+  animData:
+    id: 81c326b65dafe2f4d872e527080ac60f
+    useMoveFile: 0
+    moveInfo: {fileID: 0}
+    clip: {fileID: 7400000, guid: d316df55663a14a4cba8e2b851af044e, type: 2}
+    autoSpeed: 0
+    speed:
+      _serializedValue: 4294967296
+    wrapMode: 0
+    length:
+      _serializedValue: 429496832
+    bakeSpeed: 1
+    hitBoxDefinitionType: 0
+    customHitBoxDefinition: {fileID: 0}
+    applyRootMotion: 0
+    lockXMotion: 0
+    lockYMotion: 0
+    lockZMotion: 0
+    overrideBlendingIn: 0
+    overrideBlendingOut: 0
+    _blendingIn:
+      _serializedValue: 0
+    _blendingOut:
+      _serializedValue: 0
+    hideHitBoxes: 0
+    disableHeadLook: 0
+    soundEffects: []
+    particleEffect:
+      editorToggle: 0
+      prefab: {fileID: 0}
+      duration: 1
+      stick: 0
+      destroyOnMoveOver: 0
+      followRotation: 0
+      lockLocalPosition: 0
+      mirrorOn2PSide: 0
+      overrideRotation: 1
+      initialRotation: {x: 0, y: 0, z: 0}
+      positionOffSet: {x: 0, y: 0, z: 0}
+      bodyPart: 0
+      hitBoxDefinitionIndex: 0
+    soundEffectsToggle: 0
+    editorToggle: 0
+  _animationSpeed:
+    _serializedValue: 2576980480
+  wrapMode: 4
+  characterPrefabStorage: 0
+  characterPrefab: {fileID: 1311943263835902, guid: ceeaecc0393d0fb438fde5457a24ead6, type: 3}
+  prefabResourcePath: 
+  moveName: Dash Back
+  description: Dash Back
+  fps: 60
+  ignoreGravity: 0
+  ignoreFriction: 0
+  isFinisher: 0
+  cancelMoveWhenLanding: 0
+  landingMoveLink: {fileID: 0}
+  forceMirrorLeft: 0
+  forceMirrorRight: 0
+  invertRotationLeft: 0
+  invertRotationRight: 0
+  autoCorrectRotation: 0
+  allowSideSwitch: 0
+  maxFrameWindowRotation: 0
+  minFrameWindowRotation: 0
+  cooldown: 0
+  cooldownFrames: 0
+  disableHeadLook: 1
+  speedKeyFrameToggle: 0
+  fixedSpeed: 1
+  animSpeedKeyFrame: []
+  totalFrames: 11
+  startUpFrames: 5
+  activeFrames: 5
+  recoveryFrames: 5
+  applyRootMotion: 0
+  lockXMotion: 0
+  lockYMotion: 0
+  lockZMotion: 0
+  forceGrounded: 0
+  rootMotionNode: 0
+  overrideBlendingIn: 1
+  overrideBlendingOut: 0
+  _blendingIn:
+    _serializedValue: 0
+  _blendingOut:
+    _serializedValue: 0
+  defaultInputs:
+    chargeMove: 0
+    _chargeTiming:
+      _serializedValue: 3006477056
+    allowInputLeniency: 0
+    allowNegativeEdge: 0
+    forceAxisPrecision: 1
+    leniencyBuffer: 3
+    onReleaseExecution: 0
+    requireButtonPress: 1
+    onPressExecution: 1
+    buttonSequence: 01000000
+    buttonExecution: 01000000
+    editorToggle: 1
+    buttonSequenceToggle: 0
+    buttonExecutionToggle: 0
+  altInputs:
+    chargeMove: 0
+    _chargeTiming:
+      _serializedValue: 3006477107
+    allowInputLeniency: 0
+    allowNegativeEdge: 1
+    forceAxisPrecision: 0
+    leniencyBuffer: 3
+    onReleaseExecution: 0
+    requireButtonPress: 1
+    onPressExecution: 1
+    buttonSequence: 
+    buttonExecution: 
+    editorToggle: 0
+    buttonSequenceToggle: 0
+    buttonExecutionToggle: 0
+  previousMoves: []
+  playConditions:
+    enviromentConditions:
+      stageConditions: []
+      editorToggle: 0
+      stagesToggle: 0
+  opponentConditions:
+    basicMoveLimitation: 
+    possibleMoveStates: []
+    meterRequirements: []
+    possibleCharacters: []
+    characterSide: 0
+    editorToggle: 0
+    basicMovesToggle: 0
+    statesToggle: 0
+    meterToggle: 0
+    possibleCharactersToggle: 0
+  selfConditions:
+    basicMoveLimitation: 
+    possibleMoveStates:
+    - possibleState: 0
+      jumpArc: 0
+      jumpArcBegins: 0
+      jumpArcEnds: 100
+      opponentDistance: 0
+      proximityRangeBegins: 0
+      proximityRangeEnds: 100
+      movingForward: 1
+      movingBack: 1
+      standBy: 1
+      blocking: 0
+      blockStunned: 0
+      stunned: 0
+      dizzy: 0
+      resetStunValue: 0
+    meterRequirements: []
+    possibleCharacters: []
+    characterSide: 0
+    editorToggle: 0
+    basicMovesToggle: 0
+    statesToggle: 1
+    meterToggle: 0
+    possibleCharactersToggle: 0
+  moveClassification:
+    attackType: 3
+    hitType: 0
+    blockConditions: 0
+    startupSpeed: 0
+    recoverySpeed: 0
+    hitConfirmType: 0
+    preferableDistance: 1
+    gaugeUsage: 1
+    anyAttackType: 1
+    anyHitType: 1
+    anyBlockCondition: 1
+    anyHitConfirmType: 1
+  frameLinks: []
+  meterSettings: []
+  sortOrder: []
+  particleEffects: []
+  mediaOverlays: []
+  appliedForces:
+  - castingFrame: 0
+    resetPreviousVertical: 1
+    resetPreviousHorizontal: 1
+    affectAssists: 0
+    affectCharacter: 1
+    _force:
+      x:
+        _serializedValue: -85899345920
+      y:
+        _serializedValue: 51539607552
+      z:
+        _serializedValue: 0
+  opAppliedForces: []
+  slowMoEffects: []
+  bodyPartVisibilityChanges: []
+  opponentOverride: []
+  characterAssist: []
+  soundEffects:
+  - castingFrame: 0
+    sounds:
+    - {fileID: 8300000, guid: e49eb8fd2bdc27b49905d2c8c91c5058, type: 3}
+    soundEffectsToggle: 0
+  inGameAlert: []
+  stanceChanges: []
+  matchEvents: []
+  teleports: []
+  cameraMovements: []
+  hits: []
+  blockableArea:
+    blockableActiveFrames: 3
+    blockableAreaType: 0
+    activeFramesBegin: 0
+    activeFramesEnds: 10
+    frontDistance:
+      _serializedValue: 42949672960
+    backDistance:
+      _serializedValue: 0
+    bodyPart: 0
+    hitBoxDefinitionIndex: 0
+    shape: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 4
+      height: 4
+    _rect:
+      _x:
+        _serializedValue: 0
+      _y:
+        _serializedValue: 0
+      topRight:
+        x:
+          _serializedValue: 0
+        y:
+          _serializedValue: 0
+        z:
+          _serializedValue: 0
+      topLeft:
+        x:
+          _serializedValue: 0
+        y:
+          _serializedValue: 0
+        z:
+          _serializedValue: 0
+      bottomRight:
+        x:
+          _serializedValue: 0
+        y:
+          _serializedValue: 0
+        z:
+          _serializedValue: 0
+      bottomLeft:
+        x:
+          _serializedValue: 0
+        y:
+          _serializedValue: 0
+        z:
+          _serializedValue: 0
+      width:
+        _serializedValue: 0
+      height:
+        _serializedValue: 0
+      xMax:
+        _serializedValue: 0
+      yMax:
+        _serializedValue: 0
+    followXBounds: 0
+    followYBounds: 0
+    _radius:
+      _serializedValue: 0
+    _offSet:
+      x:
+        _serializedValue: 0
+      y:
+        _serializedValue: 0
+      z:
+        _serializedValue: 0
+    invertOffSetRightSide: 1
+    cuboidMin:
+      x:
+        _serializedValue: 0
+      y:
+        _serializedValue: 0
+      z:
+        _serializedValue: 0
+    cuboidMax:
+      x:
+        _serializedValue: 0
+      y:
+        _serializedValue: 0
+      z:
+        _serializedValue: 0
+    position:
+      x:
+        _serializedValue: 0
+      y:
+        _serializedValue: 0
+      z:
+        _serializedValue: 0
+    prevPosition:
+      x:
+        _serializedValue: 0
+      y:
+        _serializedValue: 0
+      z:
+        _serializedValue: 0
+  lockOnTargets: []
+  switchCharacterOptions: []
+  invincibleBodyParts: []
+  stateOverride: []
+  armorOptions:
+    activeFramesBegin: 0
+    activeFramesEnds: 0
+    overrideHitEffects: 0
+    blockHits: 0
+    hitEffects:
+      hitParticle: {fileID: 0}
+      killTime: 0
+      hitSound: {fileID: 0}
+      spawnPoint: 1
+      _freezingTime:
+        _serializedValue: 0
+      _animationSpeed:
+        _serializedValue: 429496736
+      autoHitStop: 1
+      sticky: 0
+      _hitStop:
+        _serializedValue: 429496736
+      mirrorOn2PSide: 0
+      shakeCharacterOnHit: 1
+      shakeCameraOnHit: 1
+      _shakeDensity:
+        _serializedValue: 3435973888
+      _shakeCameraDensity:
+        _serializedValue: 3435973836
+      editorToggle: 0
+    hitAbsorption: 0
+    damageAbsorption: 0
+    nonAffectedBodyParts: 
+  projectiles: []
+  rotationPreview: {x: 0, y: 90, z: 0}

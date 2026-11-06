@@ -1,0 +1,58 @@
+fileFormatVersion: 2
+guid: 2e1a6f6ab44ad3a4cb7c9b3d29cab563
+labels:
+- Android
+- iOS
+- iPhone
+- iPad
+- Touch
+- Mobile
+- Controller
+- Joystick
+- MultiTouch
+- Multi-touch
+- VirtualController
+- ControlFreak
+- Gesture
+- Gestures
+- Drag
+- Pinch
+- Stick
+- Finger
+- Fingers
+- TouchScreen
+- Screen
+- Button
+- Buttons
+- FPP
+- Platformer
+- Shooter
+- Control
+- Freak
+- WindowsPhone8
+- Phone
+- Tablet
+- cross-platform
+- crossplatform
+- Twist
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Robustik
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 6c90de1a6d239234dbbdd6c2fdac83d0, type: 3}
+  - {fileID: 12800000, guid: 03c148051d90d1247b2c0728bafbaf83, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

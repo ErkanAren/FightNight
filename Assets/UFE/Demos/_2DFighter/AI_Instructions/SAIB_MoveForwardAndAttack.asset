@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -843473470, guid: 290947d1480294243a72173919bf47d1, type: 3}
+  m_Name: SAIB_MoveForwardAndAttack
+  m_EditorClassIdentifier: 
+  simpleAIName: Move Forward and Attack
+  steps:
+  - buttons: 00000000
+    frames: 40
+    showInInspector: 1
+  - buttons: 
+    frames: 40
+    showInInspector: 1
+  - buttons: 05000000
+    frames: 1
+    showInInspector: 1
+  - buttons: 
+    frames: 60
+    showInInspector: 1
+  showInInspector: 0
+  showStepsInInspector: 0
