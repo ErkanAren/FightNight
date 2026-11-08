@@ -13,33 +13,69 @@ using Object = UnityEngine.Object;
 namespace FightNight.EditorTools
 {
     /// <summary>
-    /// One-click setup for the Mestre Alien fighter, using UFE's Robot_Kyle
-    /// (2D Fighter demo) as the template:
+    /// One-click setup for the Mestre Alien fighter in UFE's demos, using Robot_Kyle as the template:
     ///   1. Model: Humanoid rig, no animation, textures and materials extracted, sized like Kyle.
     ///   2. Prefab: the model + Kyle's Animator settings + Kyle's hit boxes moved onto our bones.
     ///   3. Character file: a copy of Kyle's, renamed and pointed at the new prefab and avatar.
     ///   4. Details: a description, plus portraits rendered from the model in Kyle's portrait style.
-    ///   5. Roster: added to the 2D Fighter demo's character list, so he shows on the select screen.
-    /// Safe to run again: existing textures, materials and the character file are reused,
-    /// and portraits or a description you've replaced yourself are left alone.
+    ///   5. Roster: added to the demo's character list and made selectable.
+    /// Each demo gets its own prefab and character file, built from that demo's version of Kyle
+    /// (its hit boxes and move set differ). The model and portraits are shared.
+    /// Safe to run again: finished parts are reused, and portraits or a description you've
+    /// replaced yourself are left alone.
     /// </summary>
     public static class MestreAlienSetup
     {
+        /// What differs between the demos.
+        class Target
+        {
+            public string Label;
+            public string KylePrefabPath;     // this demo's Robot_Kyle prefab (template)
+            public string KyleCharacterPath;  // this demo's Robot_Kyle character file (template)
+            public string PrefabPath;
+            public string PrefabResourcePath; // PrefabPath relative to the Resources folder, UFE style
+            public string CharacterFilePath;
+            public string[] ConfigPaths;      // the demo configs whose roster he joins
+            public string ScenePath;          // where to try him out
+        }
+
         const string DisplayName = "Mestre Alien";
         const string CharacterFolder = "Assets/FightNight/Characters/MestreAlien";
         const string ModelPath = CharacterFolder + "/Model/mestrealien.fbx";
         const string TexturesFolder = CharacterFolder + "/Model/Textures";
         const string MaterialsFolder = CharacterFolder + "/Model/Materials";
-        const string CharacterFilePath = CharacterFolder + "/MestreAlien.asset";
-        const string PrefabPath = "Assets/FightNight/Resources/Characters/MestreAlien.prefab";
-        const string PrefabResourcePath = @"Characters\MestreAlien"; // same style as the UFE demos
+        const string PrefabFolder = "Assets/FightNight/Resources/Characters";
 
-        const string KylePrefabPath = "Assets/UFE/Demos/Resources/_2DFighter/Characters/Robot_Kyle.prefab";
-        const string KyleCharacterPath = "Assets/UFE/Demos/_2DFighter/Characters/Robot_Kyle/Robot_Kyle.asset";
+        static readonly Target Fighter2D = new Target
+        {
+            Label = "2D Fighter",
+            KylePrefabPath = "Assets/UFE/Demos/Resources/_2DFighter/Characters/Robot_Kyle.prefab",
+            KyleCharacterPath = "Assets/UFE/Demos/_2DFighter/Characters/Robot_Kyle/Robot_Kyle.asset",
+            PrefabPath = PrefabFolder + "/MestreAlien.prefab",
+            PrefabResourcePath = @"Characters\MestreAlien",
+            CharacterFilePath = CharacterFolder + "/MestreAlien.asset",
+            ConfigPaths = new[] { "Assets/UFE/Demos/_2DFighter/Config_2D_Fighter.asset" },
+            ScenePath = "Assets/UFE/Demos/_2DFighter/Demo 2D Fighter.unity",
+        };
+
+        static readonly Target Fighter3D = new Target
+        {
+            Label = "3D Fighter",
+            KylePrefabPath = "Assets/UFE/Demos/Resources/_3DFighter/Characters/Robot_Kyle.prefab",
+            KyleCharacterPath = "Assets/UFE/Demos/_3DFighter/Characters/Robot_Kyle/Robot_Kyle3D.asset",
+            PrefabPath = PrefabFolder + "/MestreAlien3D.prefab",
+            PrefabResourcePath = @"Characters\MestreAlien3D",
+            CharacterFilePath = CharacterFolder + "/MestreAlien3D.asset",
+            ConfigPaths = new[]
+            {
+                "Assets/UFE/Demos/_3DFighter/Config_3D_Fighter_T1.asset",
+                "Assets/UFE/Demos/_3DFighter/Config_3D_Fighter_T2.asset",
+            },
+            ScenePath = "Assets/UFE/Demos/_3DFighter/Demo 3D Fighter (Type 1).unity",
+        };
+
         const string HitBoxesScriptName = "HitBoxesScript";
-
-        const string ConfigPath = "Assets/UFE/Demos/_2DFighter/Config_2D_Fighter.asset";
-        const int SelectScreenSlots = 8; // Button_Character_0..7 on the demo's character select screen
+        const int SelectScreenSlots = 8; // Button_Character_0..7 on the demos' character select screens
 
         const string Description = "Project: FightNight\n\nModel Type: 3D Model\n\nAnimation Type: Mecanim";
         const string PortraitSmallPath = CharacterFolder + "/UI/PortraitSmall.png";
@@ -50,40 +86,44 @@ namespace FightNight.EditorTools
 
         const string Log = "[FightNight] ";
 
-        [MenuItem("Tools/FightNight/Set Up Mestre Alien")]
-        static void Run()
+        [MenuItem("Tools/FightNight/Set Up Mestre Alien (2D Fighter)")]
+        static void Run2D() => Run(Fighter2D);
+
+        [MenuItem("Tools/FightNight/Set Up Mestre Alien (3D Fighter)")]
+        static void Run3D() => Run(Fighter3D);
+
+        static void Run(Target target)
         {
             try
             {
                 Progress("Setting up the model…", 0.1f);
-                Avatar avatar = SetUpModel();
+                Avatar avatar = SetUpModel(target);
 
                 Progress("Building the prefab…", 0.6f);
-                BuildPrefab(avatar);
+                BuildPrefab(avatar, target);
 
                 Progress("Creating the character file…", 0.8f);
-                Object character = CreateCharacterFile(avatar);
+                Object character = CreateCharacterFile(avatar, target);
 
                 Progress("Making portraits…", 0.9f);
-                FillInDetails(character);
+                FillInDetails(character, target);
 
                 Progress("Adding him to the roster…", 0.97f);
-                AddToRoster(character);
+                AddToRoster(character, target);
 
                 AssetDatabase.SaveAssets();
                 Selection.activeObject = character;
                 EditorGUIUtility.PingObject(character);
 
-                Debug.Log(Log + "Mestre Alien is set up.\n" +
-                          $"Prefab: {PrefabPath}\nCharacter file: {CharacterFilePath}");
-                EditorUtility.DisplayDialog(DisplayName,
+                Debug.Log(Log + $"Mestre Alien is set up for the {target.Label} demo.\n" +
+                          $"Prefab: {target.PrefabPath}\nCharacter file: {target.CharacterFilePath}");
+                EditorUtility.DisplayDialog($"{DisplayName} ({target.Label})",
                     "Done!\n\n" +
-                    $"• Prefab: {PrefabPath}\n" +
-                    $"• Character file: {CharacterFilePath}\n" +
+                    $"• Prefab: {target.PrefabPath}\n" +
+                    $"• Character file: {target.CharacterFilePath}\n" +
                     $"• Portraits: {CharacterFolder}/UI/\n" +
-                    "• Added to the 2D Fighter roster\n\n" +
-                    "Next: open Assets/UFE/Demos/_2DFighter/Demo 2D Fighter.unity, press Play " +
-                    "and pick Mestre Alien.",
+                    $"• Added to the {target.Label} roster\n\n" +
+                    $"Next: open {target.ScenePath}, press Play and pick Mestre Alien.",
                     "OK");
             }
             catch (Exception e)
@@ -100,7 +140,7 @@ namespace FightNight.EditorTools
 
         // ---------------------------------------------------------------- Step 2: model
 
-        static Avatar SetUpModel()
+        static Avatar SetUpModel(Target target)
         {
             ModelImporter importer = GetModelImporter();
 
@@ -116,7 +156,7 @@ namespace FightNight.EditorTools
                 importer.SaveAndReimport();
             }
 
-            MatchKylesSize();
+            MatchKylesSize(target.KylePrefabPath);
             ExtractTextures();
             ExtractMaterials();
 
@@ -127,9 +167,9 @@ namespace FightNight.EditorTools
             return avatar;
         }
 
-        static void MatchKylesSize()
+        static void MatchKylesSize(string kylePrefabPath)
         {
-            GameObject kyle = PrefabUtility.LoadPrefabContents(KylePrefabPath);
+            GameObject kyle = PrefabUtility.LoadPrefabContents(kylePrefabPath);
             Scene scene = EditorSceneManager.NewPreviewScene();
             try
             {
@@ -231,9 +271,9 @@ namespace FightNight.EditorTools
 
         // ---------------------------------------------------------------- Step 3: prefab
 
-        static void BuildPrefab(Avatar avatar)
+        static void BuildPrefab(Avatar avatar, Target target)
         {
-            GameObject kyle = PrefabUtility.LoadPrefabContents(KylePrefabPath);
+            GameObject kyle = PrefabUtility.LoadPrefabContents(target.KylePrefabPath);
             Scene scene = EditorSceneManager.NewPreviewScene();
             try
             {
@@ -247,7 +287,7 @@ namespace FightNight.EditorTools
 
                 var go = (GameObject)PrefabUtility.InstantiatePrefab(LoadModel(), scene);
                 PrefabUtility.UnpackPrefabInstance(go, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
-                go.name = "MestreAlien";
+                go.name = Path.GetFileNameWithoutExtension(target.PrefabPath);
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localRotation = Quaternion.identity;
                 go.transform.localScale = Vector3.one;
@@ -265,9 +305,9 @@ namespace FightNight.EditorTools
                 int moved = RetargetReferences(hitBoxes, bones);
                 Debug.Log(Log + $"Moved {moved} hit box links from Robot_Kyle's bones to Mestre Alien's.");
 
-                EnsureFolder(Path.GetDirectoryName(PrefabPath)?.Replace('\\', '/'));
-                PrefabUtility.SaveAsPrefabAsset(go, PrefabPath, out bool saved);
-                if (!saved) throw new Exception("Couldn't save the prefab at " + PrefabPath);
+                EnsureFolder(Path.GetDirectoryName(target.PrefabPath)?.Replace('\\', '/'));
+                PrefabUtility.SaveAsPrefabAsset(go, target.PrefabPath, out bool saved);
+                if (!saved) throw new Exception("Couldn't save the prefab at " + target.PrefabPath);
             }
             finally
             {
@@ -360,27 +400,36 @@ namespace FightNight.EditorTools
 
         // ---------------------------------------------------------------- Step 4: character file
 
-        static Object CreateCharacterFile(Avatar avatar)
+        static Object CreateCharacterFile(Avatar avatar, Target target)
         {
-            bool isNew = AssetDatabase.LoadMainAssetAtPath(CharacterFilePath) == null;
-            if (isNew && !AssetDatabase.CopyAsset(KyleCharacterPath, CharacterFilePath))
-                throw new Exception($"Couldn't copy {KyleCharacterPath}.");
+            bool isNew = AssetDatabase.LoadMainAssetAtPath(target.CharacterFilePath) == null;
+            if (isNew && !AssetDatabase.CopyAsset(target.KyleCharacterPath, target.CharacterFilePath))
+                throw new Exception($"Couldn't copy {target.KyleCharacterPath}.");
 
-            Object character = AssetDatabase.LoadMainAssetAtPath(CharacterFilePath);
+            Object character = AssetDatabase.LoadMainAssetAtPath(target.CharacterFilePath);
             var so = new SerializedObject(character);
 
             Prop(so, "characterName").stringValue = DisplayName;
             // UFE keeps its own copy of the file's ID inside the file. A copy must not keep Kyle's.
-            Prop(so, "guid").stringValue = AssetDatabase.AssetPathToGUID(CharacterFilePath);
-            Prop(so, "prefabResourcePath").stringValue = PrefabResourcePath;
+            Prop(so, "guid").stringValue = AssetDatabase.AssetPathToGUID(target.CharacterFilePath);
+            Prop(so, "prefabResourcePath").stringValue = target.PrefabResourcePath;
             Prop(so, "avatar").objectReferenceValue = avatar;
+
+            // Kyle's animation maps are hit box positions recorded on Kyle's body. Let a new copy's
+            // hit boxes follow Mestre Alien's own bones instead (you can switch it back on later).
+            if (isNew)
+            {
+                SerializedProperty maps = Prop(so, "useAnimationMaps");
+                if (maps.propertyType == SerializedPropertyType.Boolean) maps.boolValue = false;
+                else maps.intValue = 0;
+            }
 
             // Kyle's alternate colour costume pointed at Kyle's prefab; point it at ours.
             SerializedProperty costumes = Prop(so, "alternativeCostumes");
             for (int i = 0; i < costumes.arraySize; i++)
             {
                 SerializedProperty path = costumes.GetArrayElementAtIndex(i).FindPropertyRelative("prefabResourcePath");
-                if (path != null) path.stringValue = PrefabResourcePath;
+                if (path != null) path.stringValue = target.PrefabResourcePath;
             }
 
             so.ApplyModifiedPropertiesWithoutUndo();
@@ -391,10 +440,10 @@ namespace FightNight.EditorTools
 
         // ---------------------------------------------------------------- Step 5: description and portraits
 
-        static void FillInDetails(Object character)
+        static void FillInDetails(Object character, Target target)
         {
             var so = new SerializedObject(character);
-            var kyle = new SerializedObject(AssetDatabase.LoadMainAssetAtPath(KyleCharacterPath));
+            var kyle = new SerializedObject(AssetDatabase.LoadMainAssetAtPath(target.KyleCharacterPath));
 
             // Only replace what is still Kyle's (or empty), so your own text and pictures survive a re-run.
             bool StillKyles(string field) =>
@@ -409,9 +458,15 @@ namespace FightNight.EditorTools
             bool replaceBig = StillKyles("profilePictureBig");
             if (replaceSmall || replaceBig)
             {
-                // Pose him like on the select screen, using the selection animation from the character file.
-                var pose = Prop(so, "selectionAnimation").objectReferenceValue as AnimationClip;
-                MakePortraits(pose, replaceSmall, replaceBig);
+                // The portraits are shared by every demo; only render the ones that don't exist yet.
+                bool renderSmall = replaceSmall && AssetDatabase.LoadAssetAtPath<Texture2D>(PortraitSmallPath) == null;
+                bool renderBig = replaceBig && AssetDatabase.LoadAssetAtPath<Texture2D>(PortraitBigPath) == null;
+                if (renderSmall || renderBig)
+                {
+                    // Pose him like on the select screen, using the selection animation from the character file.
+                    var pose = Prop(so, "selectionAnimation").objectReferenceValue as AnimationClip;
+                    MakePortraits(pose, renderSmall, renderBig, target.PrefabPath);
+                }
                 if (replaceSmall)
                     Prop(so, "profilePictureSmall").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Texture2D>(PortraitSmallPath);
                 if (replaceBig)
@@ -423,13 +478,13 @@ namespace FightNight.EditorTools
             AssetDatabase.SaveAssets();
         }
 
-        static void MakePortraits(AnimationClip pose, bool small, bool big)
+        static void MakePortraits(AnimationClip pose, bool small, bool big, string prefabPath)
         {
             var preview = new PreviewRenderUtility();
             PlayableGraph graph = default;
             try
             {
-                GameObject go = preview.InstantiatePrefabInScene(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath));
+                GameObject go = preview.InstantiatePrefabInScene(AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath));
                 Animator animator = go.GetComponent<Animator>();
 
                 if (pose != null && pose.humanMotion)
@@ -589,10 +644,17 @@ namespace FightNight.EditorTools
 
         // ---------------------------------------------------------------- Step 6: roster
 
-        static void AddToRoster(Object character)
+        static void AddToRoster(Object character, Target target)
         {
-            Object config = AssetDatabase.LoadMainAssetAtPath(ConfigPath)
-                            ?? throw new Exception($"Couldn't find the 2D Fighter config at {ConfigPath}.");
+            foreach (string configPath in target.ConfigPaths)
+                AddToRoster(character, configPath);
+        }
+
+        static void AddToRoster(Object character, string configPath)
+        {
+            string configName = Path.GetFileNameWithoutExtension(configPath);
+            Object config = AssetDatabase.LoadMainAssetAtPath(configPath)
+                            ?? throw new Exception($"Couldn't find the UFE config at {configPath}.");
             var so = new SerializedObject(config);
             SerializedProperty characters = so.FindProperty("characters")
                                             ?? throw new Exception("The UFE config has no 'characters' list.");
@@ -609,16 +671,16 @@ namespace FightNight.EditorTools
             {
                 index = emptySlot >= 0 ? emptySlot : characters.arraySize++;
                 characters.GetArrayElementAtIndex(index).objectReferenceValue = character;
-                Debug.Log(Log + $"Added Mestre Alien to the 2D Fighter roster (slot {index + 1}).");
+                Debug.Log(Log + $"Added Mestre Alien to the {configName} roster (slot {index + 1}).");
             }
             else
             {
-                Debug.Log(Log + "Mestre Alien is already in the 2D Fighter roster.");
+                Debug.Log(Log + $"Mestre Alien is already in the {configName} roster.");
             }
 
             // Being in the roster isn't enough: UFE only offers the roster positions listed here.
-            AddIndex(so, "storyMode.selectableCharactersInVersusMode", index);
-            AddIndex(so, "storyMode.selectableCharactersInStoryMode", index);
+            AddIndex(so, "storyMode.selectableCharactersInVersusMode", index, configName);
+            AddIndex(so, "storyMode.selectableCharactersInStoryMode", index, configName);
             AddEmptyStory(so, index);
 
             so.ApplyModifiedPropertiesWithoutUndo();
@@ -626,17 +688,17 @@ namespace FightNight.EditorTools
             AssetDatabase.SaveAssets();
 
             if (characters.arraySize > SelectScreenSlots)
-                Debug.LogWarning(Log + $"The roster now has {characters.arraySize} fighters, but the demo's " +
+                Debug.LogWarning(Log + $"{configName} now has {characters.arraySize} fighters, but the demo's " +
                                  $"select screen only has {SelectScreenSlots} slots. Some won't be pickable.");
         }
 
         /// Adds a roster position to one of UFE's int lists (if it isn't there yet).
-        static void AddIndex(SerializedObject so, string path, int index)
+        static void AddIndex(SerializedObject so, string path, int index, string configName)
         {
             SerializedProperty list = so.FindProperty(path);
             if (list == null || !list.isArray)
             {
-                Debug.LogWarning(Log + $"The UFE config has no '{path}' list; skipped it.");
+                Debug.LogWarning(Log + $"{configName} has no '{path}' list; skipped it.");
                 return;
             }
             for (int i = 0; i < list.arraySize; i++)
@@ -644,7 +706,7 @@ namespace FightNight.EditorTools
 
             list.arraySize++;
             list.GetArrayElementAtIndex(list.arraySize - 1).intValue = index;
-            Debug.Log(Log + $"Mestre Alien is now selectable: {path.Substring(path.LastIndexOf('.') + 1)}.");
+            Debug.Log(Log + $"Mestre Alien is now selectable in {configName}: {path.Substring(path.LastIndexOf('.') + 1)}.");
         }
 
         /// Story mode keeps one (here empty) story per roster position, like the Global Editor does.

@@ -164,11 +164,15 @@ MonoBehaviour:
           possibleStagesIndexes: 00000000
         showOpponentsInEditor: 1
       showStoryInEditor: 1
-    selectableCharactersInStoryMode: 0100000000000000
-    selectableCharactersInVersusMode: 0000000001000000
+    selectableCharactersInStoryMode: 010000000000000002000000
+    selectableCharactersInVersusMode: 000000000100000002000000
     characterStories:
-      _keys: 0000000001000000
+      _keys: 000000000100000002000000
       _values:
+      - opening: {fileID: 0}
+        ending: {fileID: 0}
+        fightsGroups: []
+        showStoryInEditor: 0
       - opening: {fileID: 0}
         ending: {fileID: 0}
         fightsGroups: []
@@ -1278,6 +1282,7 @@ MonoBehaviour:
   characters:
   - {fileID: 11400000, guid: 56b90e0e72e9aa5408f34fa9179b76ad, type: 2}
   - {fileID: 11400000, guid: a725eeaa962d05d418936dcf27cfaa4f, type: 2}
+  - {fileID: 11400000, guid: 8fe27035cbaa846a3ae3ba4128c2fc99, type: 2}
   teamModes:
   - modeName: Tag Battle (Tekken TT) - 3D 2v2 Tag Team
     teams:
